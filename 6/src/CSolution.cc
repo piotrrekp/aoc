@@ -1,8 +1,12 @@
 #include "CSolution.h"
 #include "CCommand.h"
 #include "CPoint.h"
+#include <algorithm>
 #include <array>
+#include <cmath>
+#include <cstdint>
 #include <iostream>
+#include <iterator>
 #include <numeric>
 
 
@@ -40,42 +44,48 @@ void CLights::execute2(const CCommand &_command) {
 }
 
 void CLights::toggle(const CPoint &_start, const CPoint &_end, const bool _part2) {
-	for (std::size_t i = _start.getX(); i <= _end.getX(); ++i) {
-		for (std::size_t j = _start.getY(); j <= _end.getY(); ++j) {
-			if (_part2) {
-				matrix.at(i)[j] += 2;
+	auto const startRow = matrix.begin() + _start.getY();
+	auto const endRow = matrix.begin() + _end.getY() + 1;
 
+	std::for_each(startRow, endRow, [&](std::array<int, LIGHTS_SIZE> &row) {
+		std::for_each(row.begin() + _start.getX(), row.begin() + _end.getX() + 1, [&_part2](int &x) {
+			if(_part2) {
+				x += 2;
 			} else {
-				matrix.at(i)[j] = !matrix.at(i)[j];
+				x = !x;
 			}
-		}
-	}
+		});
+	});
 }
 
 void CLights::turnOff(const CPoint &_start, const CPoint &_end, const bool _part2) {
-	for (std::size_t i = _start.getX(); i <= _end.getX(); ++i) {
-		for (std::size_t j = _start.getY(); j <= _end.getY(); ++j) {
-			if (_part2) {
-				matrix.at(i)[j] = std::max(0, matrix.at(i)[j] - 1);
+	auto const startRow = matrix.begin() + _start.getY();
+	auto const endRow = matrix.begin() + _end.getY() + 1;
 
-
+	std::for_each(startRow, endRow, [&](std::array<int, LIGHTS_SIZE> &row) {
+		std::for_each(row.begin() + _start.getX(), row.begin() + _end.getX() + 1, [&_part2](int &x) {
+			if(_part2) {
+				x = std::max(0, x - 1);
 			} else {
-				matrix.at(i)[j] = 0;
+				x = 0;
 			}
-		}
-	}
+		});
+	});
 }
 
 void CLights::turnOn(const CPoint &_start, const CPoint &_end, const bool _part2) {
-	for (std::size_t i = _start.getX(); i <= _end.getX(); ++i) {
-		for (std::size_t j = _start.getY(); j <= _end.getY(); ++j) {
-			if (_part2) {
-				matrix.at(i)[j] += 1;
+	auto const startRow = matrix.begin() + _start.getY();
+	auto const endRow = matrix.begin() + _end.getY() + 1;
+
+	std::for_each(startRow, endRow, [&](std::array<int, LIGHTS_SIZE> &row) {
+		std::for_each(row.begin() + _start.getX(), row.begin() + _end.getX() + 1, [&_part2](int &x) {
+			if(_part2) {
+				x += 1;
 			} else {
-				matrix.at(i)[j] = 1;
+				x = 1;
 			}
-		}
-	}
+		});
+	});
 }
 
 int CLights::getLit() {
