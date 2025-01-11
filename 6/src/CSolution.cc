@@ -44,48 +44,47 @@ void CLights::execute2(const CCommand &_command) {
 }
 
 void CLights::toggle(const CPoint &_start, const CPoint &_end, const bool _part2) {
-	auto const startRow = matrix.begin() + _start.getY();
-	auto const endRow = matrix.begin() + _end.getY() + 1;
+	auto part1 = [](int &x) {x = !x;};
+	auto part2 = [](int &x) {x += 2;};
 
-	std::for_each(startRow, endRow, [&](std::array<int, LIGHTS_SIZE> &row) {
-		std::for_each(row.begin() + _start.getX(), row.begin() + _end.getX() + 1, [&_part2](int &x) {
-			if(_part2) {
-				x += 2;
-			} else {
-				x = !x;
-			}
-		});
-	});
+	if (_part2) {
+		doIt(_start, _end, part2);
+	} else {
+		doIt(_start, _end, part1);
+	}
 }
 
 void CLights::turnOff(const CPoint &_start, const CPoint &_end, const bool _part2) {
-	auto const startRow = matrix.begin() + _start.getY();
-	auto const endRow = matrix.begin() + _end.getY() + 1;
+	auto part1 = [](int &x) { x = 0;};
+	auto part2 = [](int &x) { x = std::max(0, x - 1); };
 
-	std::for_each(startRow, endRow, [&](std::array<int, LIGHTS_SIZE> &row) {
-		std::for_each(row.begin() + _start.getX(), row.begin() + _end.getX() + 1, [&_part2](int &x) {
-			if(_part2) {
-				x = std::max(0, x - 1);
-			} else {
-				x = 0;
-			}
-		});
-	});
+	if (_part2) {
+		doIt(_start, _end, part2);
+	} else {
+		doIt(_start, _end, part1);
+	}
 }
 
 void CLights::turnOn(const CPoint &_start, const CPoint &_end, const bool _part2) {
+	auto part1 = [](int &x) { x = 1; };
+	auto part2 = [](int &x) { x += 1;};
+
+	if (_part2) {
+		doIt(_start, _end, part2);
+	} else {
+		doIt(_start, _end, part1);
+	}
+}
+
+template<typename Function>
+void CLights::doIt(const CPoint &_start, const CPoint &_end, Function &f) {
 	auto const startRow = matrix.begin() + _start.getY();
 	auto const endRow = matrix.begin() + _end.getY() + 1;
 
 	std::for_each(startRow, endRow, [&](std::array<int, LIGHTS_SIZE> &row) {
-		std::for_each(row.begin() + _start.getX(), row.begin() + _end.getX() + 1, [&_part2](int &x) {
-			if(_part2) {
-				x += 1;
-			} else {
-				x = 1;
-			}
-		});
+		std::for_each(row.begin() + _start.getX(), row.begin() + _end.getX() + 1, f);
 	});
+
 }
 
 int CLights::getLit() {

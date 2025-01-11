@@ -16,7 +16,10 @@ public:
 	void execute(const CCommand &_command);
 	void execute2(const CCommand &_command);
 	int getLit();
+
 private:
+	template <typename Function>
+	void doIt(const CPoint &_start, const CPoint &_end, Function &f);
 	void toggle(const CPoint &_start, const CPoint &_end, const bool part2 = false);
 	void turnOn(const CPoint &_start, const CPoint &_end, const bool part2 = false);
 	void turnOff(const CPoint &_start, const CPoint &_end, const bool part2 = false);
