@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="1" failures="1" disabled="0" errors="0" time="0.001" timestamp="2025-01-14T19:22:19" name="AllTests">
+  <testsuite name="CSolutionTester" tests="1" failures="1" disabled="0" errors="0" time="0.001" timestamp="2025-01-14T19:22:19">
+    <testcase name="TestName/0" value_param="32-byte object &lt;80-06 00-00 60-60 00-00 C0-06 00-00 60-60 00-00 C0-06 00-00 60-60 00-00 01-BE BE-BE BE-BE BE-BE&gt;" status="run" result="completed" time="0.001" timestamp="2025-01-14T19:22:19" classname="CSolutionTester">
+      <failure message="/home/pplucinski/Projekty/AoC/2015/16/test/CSolutionTest.cc:26&#x0A;Expected equality of these values:&#x0A;  getResultPart1()&#x0A;    Which is: 0&#x0A;  GetParam().expected&#x0A;    Which is: true" type=""><![CDATA[/home/pplucinski/Projekty/AoC/2015/16/test/CSolutionTest.cc:26
+Expected equality of these values:
+  getResultPart1()
+    Which is: 0
+  GetParam().expected
+    Which is: true]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>
